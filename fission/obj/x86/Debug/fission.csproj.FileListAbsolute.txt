@@ -1,0 +1,6 @@
+/mnt/Programs/csharp/fission/build/fission.exe
+/mnt/Programs/csharp/fission/build/fission.pdb
+/mnt/Programs/csharp/fission/fission/obj/x86/Debug/fission.csprojResolveAssemblyReference.cache
+/mnt/Programs/csharp/fission/fission/obj/x86/Debug/fission.csproj.CoreCompileInputs.cache
+/mnt/Programs/csharp/fission/fission/obj/x86/Debug/fission.exe
+/mnt/Programs/csharp/fission/fission/obj/x86/Debug/fission.pdb
