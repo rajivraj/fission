@@ -40,11 +40,10 @@ namespace fission
                     WriteLine("[*] Fetching Version");
                     ResetColor();
                     var url = "https://raw.githubusercontent.com/tbhaxor/fission/master/.versioninfo";
-                    var urlP = $"{url}?token=AbEloXTmnDJMsYcXr45MZC4skJ7gNuQEks5byYvuwA%3D%3D";
                     var asm = GetExecutingAssembly();
                     var fvi = GetVersionInfo(asm.Location);
                     var version = fvi.FileVersion;
-                    var client = new RestClient(urlP);
+                    var client = new RestClient(url);
                     var request = new RestRequest(Method.GET);
                     var response = client.Execute(request);
                     if (response.IsSuccessful)
