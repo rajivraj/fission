@@ -154,7 +154,7 @@ namespace fission
                         WriteLine("[!] Not found - Misc File");
                         ResetColor();
                         var scan = SendScan(fileInfo);
-                        misc.Add(scan.SHA256);
+                        misc.Add($"{scan.SHA256}|{fileInfo.FullName}");
                         isMisc = true;
                         //break;
                     }
