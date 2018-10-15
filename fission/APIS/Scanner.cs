@@ -71,9 +71,21 @@ namespace fission
 
         static ScanResult SendScan(FileInfo file)
         {
+
             VirusTotal vt = new VirusTotal(File.ReadAllText(Globals.ApiKey));
-            var report = vt.ScanFileAsync(file);
+
+            System.Threading.Tasks.Task<ScanResult> report = null;
+            try
+            {
+                report = vt.ScanFileAsync(file);
+            }
+            catch(System.AggregateException e)
+            {
+                WriteLine(e.Message);
+                Exit(1);
+            }
             return report.Result;
+
         }
 
         static void SafeGuardApi()
