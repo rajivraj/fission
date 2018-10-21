@@ -1,4 +1,8 @@
-﻿using static System.Console;
+﻿/*
+ * File to scan file
+ * 
+ * */
+using static System.Console;
 using static System.ConsoleColor;
 using static System.Environment;
 using static System.Threading.Thread;
@@ -14,6 +18,10 @@ namespace fission
     public static class Scanner
     {
         static int opt;
+
+        /// <summary>
+        /// Method to show scanner menu
+        /// </summary>
         public static void Show()
         {
             Clear();
@@ -36,9 +44,12 @@ namespace fission
             int.TryParse(ReadLine(), out opt);
         }
 
+        /// <summary>
+        /// Method to handle user selection for scanner
+        /// </summary>
         public static void Execute()
         {
-            SafeGuardApi();
+            SafeGuardApi(); // safegaurd api check
             switch(opt)
             {
                 case 1:
@@ -62,6 +73,11 @@ namespace fission
             }
         }
 
+        /// <summary>
+        /// Method to get report report
+        /// </summary>
+        /// <returns>The report.</returns>
+        /// <param name="sha256">Sha256.</param>
         static FileReport Report(string sha256)
         {
             VirusTotal virus = new VirusTotal(File.ReadAllText(Globals.ApiKey));
@@ -69,6 +85,11 @@ namespace fission
             return report.Result;
         }
 
+        /// <summary>
+        /// Method to send file on server for scanning
+        /// </summary>
+        /// <returns>The scan.</returns>
+        /// <param name="file">File.</param>
         static ScanResult SendScan(FileInfo file)
         {
 
@@ -88,6 +109,9 @@ namespace fission
 
         }
 
+        /// <summary>
+        /// Checks if api exists and is valid or not
+        /// </summary>
         static void SafeGuardApi()
         {
             if(!File.Exists(Globals.ApiKey) || File.ReadAllText(Globals.ApiKey) == "")
@@ -111,12 +135,15 @@ namespace fission
             ForegroundColor = Blue;
             WriteLine($"[*] Scan Started At {Globals.CurrentDateTime}");
             ResetColor();
+
+            // getting filenames
             var files = Directory.GetFiles(CurrentDirectory, "*", SearchOption.AllDirectories);
+            // instacing misc to store misc files
             var misc = new System.Collections.Generic.List<string>();
-            var isMisc = false;
+            var isMisc = false; // flag to check if any misc file
             foreach (var file in files)
             {
-                if (++total > 5000)
+                if (++total > 5000)  // safeguard api calls
                 {
                     ForegroundColor = Red;
                     WriteLine("You reached  5000/per day scan limit");
@@ -125,14 +152,15 @@ namespace fission
                     Exit(1);
                 }
                 var fileInfo = new FileInfo(file);
-                if (fileInfo.Length < 1.28e+8)
+                if (fileInfo.Length < 1.28e+8)  // safeguard file size
                 {
                     ForegroundColor = Yellow;
                     WriteLine($"[~] Scanning {fileInfo.FullName}");
                     ResetColor();
                     var report = Report(Globals.GetSHA256(fileInfo.FullName));
-                    if (report.ResponseCode == FileReportResponseCode.Present)
+                    if (report.ResponseCode == FileReportResponseCode.Present) 
                     {
+                        // execute detection and format detection if file is present on server
                         int detected = 0;
                         foreach(var av in report.Scans.Keys)
                         {
@@ -141,6 +169,7 @@ namespace fission
                         }
                         FormatDetection(detected);
                     }
+                    // otherwise misc file is not there or is being scanned
                     else if(report.ResponseCode == FileReportResponseCode.Queued)
                     {
                         // file is queued
@@ -154,12 +183,12 @@ namespace fission
                         WriteLine("[!] Not found - Misc File");
                         ResetColor();
                         var scan = SendScan(fileInfo);
-                        misc.Add($"{scan.SHA256}|{fileInfo.FullName}");
+                        misc.Add($"{scan.SHA256}|{fileInfo.FullName}");  // adding to misc file
                         isMisc = true;
                         //break;
                     }
                     WriteLine($"[#] Next Scan At {Now.AddSeconds(30):dd/MM/yyyy hh:mm:ss tt}");
-                    Sleep(30000);
+                    Sleep(30000); // sleep to prevent spamming
 
                 }
                 else
@@ -174,6 +203,7 @@ namespace fission
             ResetColor();
             if(isMisc)
             {
+                // writing misc files
                 File.WriteAllLines(Globals.MiscFile, misc.ToArray());
                 WriteLine();
                 WriteLine("We found some miscellaneous files");
@@ -182,7 +212,8 @@ namespace fission
         }
 
         /// <summary>
-        /// Method scans the file
+        /// Method scans the file.
+        /// Note: Same implementation as of ScanDir but with one file only
         /// </summary>
         static void ScanFile()
         {
@@ -239,7 +270,7 @@ namespace fission
             WriteLine("-- Miscellaneous File Scanner --");
             WriteLine();
 
-            if (!File.Exists(Globals.MiscFile))
+            if (!File.Exists(Globals.MiscFile))  // safeguard misc file search
             {
                 ForegroundColor = Yellow;
                 WriteLine("No miscellaneous file to scan");
@@ -253,7 +284,6 @@ namespace fission
                 var split = entry.Split('|');
                 miscFeed.Add(split[0], split[1]);
             }
-            File.Delete(Globals.MiscFile);
 
             ForegroundColor = Blue;
             WriteLine($"[*] Scan Started At {Globals.CurrentDateTime}");
@@ -275,6 +305,7 @@ namespace fission
             ForegroundColor = Blue;
             WriteLine($"[*] Scan Completed At {Globals.CurrentDateTime}");
             ResetColor();
+            File.Delete(Globals.MiscFile); // delete file
         }
 
         /// <summary>

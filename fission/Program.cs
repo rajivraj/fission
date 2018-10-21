@@ -8,10 +8,16 @@ namespace fission
 {
     static class MainClass
     {
-        public static void Main(string[] args)
+        /// <summary>
+        /// The entry point of the program, where the program control starts and ends.
+        /// </summary>
+        public static void Main()
         {
+            // invoking functions
             Banner();
             Init();
+
+            // switching menu
             switch(Menu())
             {
                 case 1:
@@ -23,6 +29,7 @@ namespace fission
                     Settings.Execute();
                     break;
                 case 3:
+                    // say thanks and exit
                     Clear();
                     string s1 = "Thank you for using ";
                     string s2 = "Fission";
@@ -50,6 +57,9 @@ namespace fission
             }
         }
 
+        /// <summary>
+        /// Prints banner
+        /// </summary>
         static void Banner()
         {
             Clear();
@@ -64,6 +74,11 @@ namespace fission
             ResetColor();
             WriteLine();
         }
+
+        /// <summary>
+        /// Handle menu prompting
+        /// </summary>
+        /// <returns>Option selected</returns>
         static int Menu()
         {
             ForegroundColor = Yellow;
@@ -86,6 +101,9 @@ namespace fission
             return opt;
         }
 
+        /// <summary>
+        /// Method to check if appdata exists, otherwise create appdata directory
+        /// </summary>
         static void Init()
         {
             if(!Directory.Exists(Globals.AppData))
