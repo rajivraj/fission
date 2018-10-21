@@ -17,4 +17,7 @@ Global
 		{E51D339E-E427-424C-A1AF-E154FB0A4AE3}.Release|x64.ActiveCfg = Release|x64
 		{E51D339E-E427-424C-A1AF-E154FB0A4AE3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		version = 1.0.3
+	EndGlobalSection
 EndGlobal

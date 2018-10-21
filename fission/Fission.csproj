@@ -9,7 +9,7 @@
     <AssemblyName>fission</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <Description>Fission is a damn easy file scanner utility using virustotal api</Description>
-    <SynchReleaseVersion>false</SynchReleaseVersion>
+    <ReleaseVersion>1.0.3</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
