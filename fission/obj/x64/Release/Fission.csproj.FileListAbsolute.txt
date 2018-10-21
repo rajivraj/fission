@@ -1,3 +1,4 @@
 /mnt/Programs/csharp/fission/build/x64/Fission.exe
 /mnt/Programs/csharp/fission/fission/obj/x64/Release/Fission.csproj.CoreCompileInputs.cache
 /mnt/Programs/csharp/fission/fission/obj/x64/Release/Fission.exe
+/mnt/Programs/csharp/fission/fission/obj/x64/Release/Fission.csprojResolveAssemblyReference.cache
